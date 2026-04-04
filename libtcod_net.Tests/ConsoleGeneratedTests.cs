@@ -1,4 +1,5 @@
 using System.Text;
+using static libtcod.Interop.libtcod;
 
 namespace libtcod_net.Tests;
 
@@ -7,40 +8,40 @@ public class ConsoleGeneratedTests
     [Fact]
     public void ConsoleBasics_MatchNativeExpectations()
     {
-        var console = LibraryImportMethods.TCOD_console_new(3, 2);
+        var console = TCOD_console_new(3, 2);
         Assert.NotEqual(nint.Zero, console);
 
         try
         {
-            Assert.Equal(3, LibraryImportMethods.TCOD_console_get_width(console));
-            Assert.Equal(2, LibraryImportMethods.TCOD_console_get_height(console));
+            Assert.Equal(3, TCOD_console_get_width(console));
+            Assert.Equal(2, TCOD_console_get_height(console));
 
             for (int y = 0; y < 2; ++y)
             {
                 for (int x = 0; x < 3; ++x)
                 {
-                    Assert.Equal(0x20, LibraryImportMethods.TCOD_console_get_char(console, x, y));
+                    Assert.Equal(0x20, TCOD_console_get_char(console, x, y));
                     Assert.Equal(
                         TCOD_ColorRGB.TCOD_white,
-                        LibraryImportMethods.TCOD_console_get_char_foreground(console, x, y)
+                        TCOD_console_get_char_foreground(console, x, y)
                     );
                     Assert.Equal(
                         TCOD_ColorRGB.TCOD_black,
-                        LibraryImportMethods.TCOD_console_get_char_background(console, x, y)
+                        TCOD_console_get_char_background(console, x, y)
                     );
                 }
             }
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 
     [Fact]
     public void ConsolePutRgbAndClear_WorkAsExpected()
     {
-        var console = LibraryImportMethods.TCOD_console_new(2, 1);
+        var console = TCOD_console_new(2, 1);
         Assert.NotEqual(nint.Zero, console);
 
         try
@@ -57,42 +58,28 @@ public class ConsoleGeneratedTests
                 g = 5,
                 b = 6,
             };
-            LibraryImportMethods.TCOD_console_put_rgb_struct(
-                console,
-                0,
-                0,
-                'A',
-                fg,
-                bg,
-                TCOD_bkgnd_flag_t.TCOD_BKGND_SET
-            );
+            TCOD_console_put_rgb(console, 0, 0, 'A', fg, bg, TCOD_bkgnd_flag_t.TCOD_BKGND_SET);
 
-            Assert.Equal('A', LibraryImportMethods.TCOD_console_get_char(console, 0, 0));
-            Assert.Equal(fg, LibraryImportMethods.TCOD_console_get_char_foreground(console, 0, 0));
-            Assert.Equal(bg, LibraryImportMethods.TCOD_console_get_char_background(console, 0, 0));
+            Assert.Equal('A', TCOD_console_get_char(console, 0, 0));
+            Assert.Equal(fg, TCOD_console_get_char_foreground(console, 0, 0));
+            Assert.Equal(bg, TCOD_console_get_char_background(console, 0, 0));
 
-            LibraryImportMethods.TCOD_console_clear(console);
+            TCOD_console_clear(console);
 
-            Assert.Equal(0x20, LibraryImportMethods.TCOD_console_get_char(console, 0, 0));
-            Assert.Equal(
-                TCOD_ColorRGB.TCOD_white,
-                LibraryImportMethods.TCOD_console_get_char_foreground(console, 0, 0)
-            );
-            Assert.Equal(
-                TCOD_ColorRGB.TCOD_black,
-                LibraryImportMethods.TCOD_console_get_char_background(console, 0, 0)
-            );
+            Assert.Equal(0x20, TCOD_console_get_char(console, 0, 0));
+            Assert.Equal(TCOD_ColorRGB.TCOD_white, TCOD_console_get_char_foreground(console, 0, 0));
+            Assert.Equal(TCOD_ColorRGB.TCOD_black, TCOD_console_get_char_background(console, 0, 0));
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 
     [Fact]
     public void ConsoleDrawRectAndFrameRgb_ModifyExpectedCells()
     {
-        var console = LibraryImportMethods.TCOD_console_new(8, 8);
+        var console = TCOD_console_new(8, 8);
         Assert.NotEqual(nint.Zero, console);
 
         try
@@ -116,7 +103,7 @@ public class ConsoleGeneratedTests
                 b = 64,
             };
 
-            LibraryImportMethods.TCOD_console_draw_rect_rgb_struct(
+            TCOD_console_draw_rect_rgb(
                 console,
                 2,
                 2,
@@ -127,7 +114,7 @@ public class ConsoleGeneratedTests
                 rectBg,
                 TCOD_bkgnd_flag_t.TCOD_BKGND_SET
             );
-            LibraryImportMethods.TCOD_console_draw_frame_rgb_struct(
+            TCOD_console_draw_frame_rgb(
                 console,
                 1,
                 1,
@@ -140,24 +127,15 @@ public class ConsoleGeneratedTests
                 false
             );
 
-            Assert.Equal('#', LibraryImportMethods.TCOD_console_get_char(console, 3, 3));
-            Assert.Equal(
-                rectBg,
-                LibraryImportMethods.TCOD_console_get_char_background(console, 3, 3)
-            );
-            Assert.NotEqual(0x20, LibraryImportMethods.TCOD_console_get_char(console, 1, 1));
-            Assert.Equal(
-                frameFg,
-                LibraryImportMethods.TCOD_console_get_char_foreground(console, 1, 1)
-            );
-            Assert.Equal(
-                frameBg,
-                LibraryImportMethods.TCOD_console_get_char_background(console, 1, 1)
-            );
+            Assert.Equal('#', TCOD_console_get_char(console, 3, 3));
+            Assert.Equal(rectBg, TCOD_console_get_char_background(console, 3, 3));
+            Assert.NotEqual(0x20, TCOD_console_get_char(console, 1, 1));
+            Assert.Equal(frameFg, TCOD_console_get_char_foreground(console, 1, 1));
+            Assert.Equal(frameBg, TCOD_console_get_char_background(console, 1, 1));
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 
@@ -174,13 +152,13 @@ public class ConsoleGeneratedTests
         int ch3
     )
     {
-        var console = LibraryImportMethods.TCOD_console_new(4, 1);
+        var console = TCOD_console_new(4, 1);
         Assert.NotEqual(nint.Zero, console);
 
         try
         {
             var byteCount = (nuint)Encoding.UTF8.GetByteCount(text);
-            var written = LibraryImportMethods.TCOD_console_printn_ptr(
+            var written = TCOD_console_printn(
                 console,
                 0,
                 0,
@@ -193,14 +171,14 @@ public class ConsoleGeneratedTests
             );
 
             Assert.True(written >= 0);
-            Assert.Equal(ch0, LibraryImportMethods.TCOD_console_get_char(console, 0, 0));
-            Assert.Equal(ch1, LibraryImportMethods.TCOD_console_get_char(console, 1, 0));
-            Assert.Equal(ch2, LibraryImportMethods.TCOD_console_get_char(console, 2, 0));
-            Assert.Equal(ch3, LibraryImportMethods.TCOD_console_get_char(console, 3, 0));
+            Assert.Equal(ch0, TCOD_console_get_char(console, 0, 0));
+            Assert.Equal(ch1, TCOD_console_get_char(console, 1, 0));
+            Assert.Equal(ch2, TCOD_console_get_char(console, 2, 0));
+            Assert.Equal(ch3, TCOD_console_get_char(console, 3, 0));
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 }

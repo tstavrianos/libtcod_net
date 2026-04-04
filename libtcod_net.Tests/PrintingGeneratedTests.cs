@@ -1,3 +1,5 @@
+using static libtcod.Interop.libtcod;
+
 namespace libtcod_net.Tests;
 
 public class PrintingGeneratedTests
@@ -5,7 +7,7 @@ public class PrintingGeneratedTests
     [Fact]
     public void ConsolePrintnRect_ZeroRectAlignmentsMatchNativeExpectation()
     {
-        var console = LibraryImportMethods.TCOD_console_new(12, 1);
+        var console = TCOD_console_new(12, 1);
         Assert.NotEqual(nint.Zero, console);
 
         try
@@ -13,7 +15,7 @@ public class PrintingGeneratedTests
             FillConsole(console, 12, 1, '.');
 
             var len = (nuint)3;
-            LibraryImportMethods.TCOD_console_printn_rect_ptr(
+            TCOD_console_printn_rect(
                 console,
                 0,
                 0,
@@ -26,7 +28,7 @@ public class PrintingGeneratedTests
                 TCOD_bkgnd_flag_t.TCOD_BKGND_NONE,
                 TCOD_alignment_t.TCOD_LEFT
             );
-            LibraryImportMethods.TCOD_console_printn_rect_ptr(
+            TCOD_console_printn_rect(
                 console,
                 0,
                 0,
@@ -39,7 +41,7 @@ public class PrintingGeneratedTests
                 TCOD_bkgnd_flag_t.TCOD_BKGND_NONE,
                 TCOD_alignment_t.TCOD_CENTER
             );
-            LibraryImportMethods.TCOD_console_printn_rect_ptr(
+            TCOD_console_printn_rect(
                 console,
                 0,
                 0,
@@ -57,14 +59,14 @@ public class PrintingGeneratedTests
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 
     [Fact]
     public void PrintParamsRgb_PositionsCharactersAsInNativeTest()
     {
-        var console = LibraryImportMethods.TCOD_console_new(4, 1);
+        var console = TCOD_console_new(4, 1);
         Assert.NotEqual(nint.Zero, console);
 
         try
@@ -75,16 +77,16 @@ public class PrintingGeneratedTests
             @params.flag = TCOD_bkgnd_flag_t.TCOD_BKGND_NONE;
             @params.alignment = TCOD_alignment_t.TCOD_LEFT;
 
-            LibraryImportMethods.TCOD_printn_rgb(console, @params, 1, "A");
+            TCOD_printn_rgb(console, @params, 1, "A");
             Assert.Equal(" A  ", ConsoleRowToString(console, 4, 0));
 
             @params.x = 2;
-            LibraryImportMethods.TCOD_printn_rgb(console, @params, 1, "B");
+            TCOD_printn_rgb(console, @params, 1, "B");
             Assert.Equal(" AB ", ConsoleRowToString(console, 4, 0));
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(console);
+            TCOD_console_delete(console);
         }
     }
 
@@ -94,7 +96,7 @@ public class PrintingGeneratedTests
         {
             for (int x = 0; x < width; ++x)
             {
-                LibraryImportMethods.TCOD_console_put_rgb_struct(
+                TCOD_console_put_rgb(
                     console,
                     x,
                     y,
@@ -112,7 +114,7 @@ public class PrintingGeneratedTests
         var chars = new char[width];
         for (int x = 0; x < width; ++x)
         {
-            chars[x] = (char)LibraryImportMethods.TCOD_console_get_char(console, x, row);
+            chars[x] = (char)TCOD_console_get_char(console, x, row);
         }
 
         return new string(chars);

@@ -1,4 +1,5 @@
 using System.Reflection;
+using static libtcod.Interop.libtcod;
 
 namespace libtcod_net.Tests;
 

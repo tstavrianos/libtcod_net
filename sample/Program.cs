@@ -1,51 +1,53 @@
-﻿using libtcod_net;
-using static libtcod_net.NativeMethods;
+﻿using System;
+using static libtcod.Interop.libtcod;
 using static SDL3.SDL;
 
-var tileSet = TCOD_tileset_load(
+var tcodTileset = TCOD_tileset_load(
     "RDE_vector_32x32_gs_ro_transparent.png",
     16,
     16,
-    TCOD_CharMaps.CP437.Length,
-    TCOD_CharMaps.CP437
+    TCOD_Charmaps.TCOD_CHARMAP_CP437.Length,
+    TCOD_Charmaps.TCOD_CHARMAP_CP437
+);
+TCOD_context_new(
+    new TCOD_ContextParams()
+    {
+        columns = 80,
+        rows = 50,
+        window_title = "libtcod-net",
+        tileset = tcodTileset,
+    },
+    out var tcodContext
 );
 
-using var paramsScope = ContextInteropHelpers.CreateDefaultParams(
-    columns: 80,
-    rows: 50,
-    windowTitle: "libtcod-net",
-    tileset: tileSet
-);
-
-var result = ContextInteropHelpers.CreateContext(in paramsScope.Value, out var context);
-Console.WriteLine($"TCOD_context_new result: {result}, context: 0x{context.ToInt64():X}");
-if (context == nint.Zero)
+Console.WriteLine($"TCOD_context_new result: context: 0x{tcodContext.ToInt64():X}");
+if (tcodContext == nint.Zero)
 {
-    TCOD_tileset_delete(tileSet);
+    TCOD_tileset_delete(tcodTileset);
     return;
 }
-var viewPort = TCOD_viewport_new();
-Console.WriteLine($"TCOD_viewport_new result:  viewPort: 0x{viewPort.ToInt64():X}");
-if (viewPort == nint.Zero)
+var tcodViewport = TCOD_viewport_new();
+Console.WriteLine($"TCOD_viewport_new result:  viewPort: 0x{tcodViewport.ToInt64():X}");
+if (tcodViewport == nint.Zero)
 {
-    TCOD_context_delete(context);
-    TCOD_tileset_delete(tileSet);
+    TCOD_context_delete(tcodContext);
+    TCOD_tileset_delete(tcodTileset);
     return;
 }
 
-var console = TCOD_console_new(80, 50);
-Console.WriteLine($"TCOD_console_new result: console: 0x{console.ToInt64():X}");
-if (console == nint.Zero)
+var tcodConsole = TCOD_console_new(80, 50);
+Console.WriteLine($"TCOD_console_new result: console: 0x{tcodConsole.ToInt64():X}");
+if (tcodConsole == nint.Zero)
 {
-    TCOD_context_delete(context);
-    TCOD_viewport_delete(viewPort);
-    TCOD_tileset_delete(tileSet);
+    TCOD_viewport_delete(tcodViewport);
+    TCOD_context_delete(tcodContext);
+    TCOD_tileset_delete(tcodTileset);
     return;
 }
 while (true)
 {
     TCOD_console_put_rgb(
-        console,
+        tcodConsole,
         1,
         1,
         '@',
@@ -53,9 +55,9 @@ while (true)
         nint.Zero,
         TCOD_bkgnd_flag_t.TCOD_BKGND_NONE
     );
-    TCOD_context_present(context, console, viewPort);
+    TCOD_context_present(tcodContext, tcodConsole, tcodViewport);
 
-    TCOD_console_clear(console);
+    TCOD_console_clear(tcodConsole);
 
     while (SDL_WaitEvent(out var @event))
     {
@@ -67,7 +69,7 @@ while (true)
 }
 
 cleanup:
-TCOD_viewport_delete(viewPort);
-TCOD_console_delete(console);
-TCOD_context_delete(context);
-TCOD_tileset_delete(tileSet);
+TCOD_console_delete(tcodConsole);
+TCOD_viewport_delete(tcodViewport);
+TCOD_context_delete(tcodContext);
+TCOD_tileset_delete(tcodTileset);

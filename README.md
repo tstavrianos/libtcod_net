@@ -1,6 +1,6 @@
 # Dotnet bindings for libtcod
 
-Generated mostly with the help of copilot, with some tweaks here and there.
+Initial bindings were generated mostly with the help of copilot, with some tweaks here and there.
 
 Included are some unit tests to verify everything is working correctly (ported from the libtcod source code).
 

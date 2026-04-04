@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="libtcod_net/libtcod_net.csproj" />
+  <Project Path="BindGen/BindGen.csproj" />
   <Project Path="libtcod_net.Tests/libtcod_net.Tests.csproj" />
   <Project Path="sample/sample.csproj" />
   <Project Path="SDL3-CS/SDL3/SDL3.Core.csproj" />

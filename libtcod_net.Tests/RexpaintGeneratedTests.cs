@@ -1,3 +1,5 @@
+using static libtcod.Interop.libtcod;
+
 namespace libtcod_net.Tests;
 
 public class RexpaintGeneratedTests
@@ -5,8 +7,8 @@ public class RexpaintGeneratedTests
     [Fact]
     public void SaveAndLoadXp_RoundTripsGeneratedConsoleFunctions()
     {
-        var console1 = LibraryImportMethods.TCOD_console_new(3, 2);
-        var console2 = LibraryImportMethods.TCOD_console_new(3, 2);
+        var console1 = TCOD_console_new(3, 2);
+        var console2 = TCOD_console_new(3, 2);
         Assert.NotEqual(nint.Zero, console1);
         Assert.NotEqual(nint.Zero, console2);
 
@@ -17,21 +19,12 @@ public class RexpaintGeneratedTests
             FillConsole(console1, '!');
             FillConsole(console2, '@');
 
-            var saveResult = LibraryImportMethods.TCOD_save_xp_array(
-                2,
-                new[] { console1, console2 },
-                tempPath,
-                0
-            );
+            var saveResult = TCOD_save_xp(2, new[] { console1, console2 }, tempPath, 0);
             Assert.True(saveResult >= 0);
             Assert.True(File.Exists(tempPath));
 
             var loaded = new nint[2];
-            var loadedCount = LibraryImportMethods.TCOD_load_xp_array(
-                tempPath,
-                loaded.Length,
-                loaded
-            );
+            var loadedCount = TCOD_load_xp(tempPath, loaded.Length, loaded);
             Assert.Equal(2, loadedCount);
             Assert.NotEqual(nint.Zero, loaded[0]);
             Assert.NotEqual(nint.Zero, loaded[1]);
@@ -47,7 +40,7 @@ public class RexpaintGeneratedTests
                 {
                     if (console != nint.Zero)
                     {
-                        LibraryImportMethods.TCOD_console_delete(console);
+                        TCOD_console_delete(console);
                     }
                 }
             }
@@ -61,12 +54,12 @@ public class RexpaintGeneratedTests
 
             if (console2 != nint.Zero)
             {
-                LibraryImportMethods.TCOD_console_delete(console2);
+                TCOD_console_delete(console2);
             }
 
             if (console1 != nint.Zero)
             {
-                LibraryImportMethods.TCOD_console_delete(console1);
+                TCOD_console_delete(console1);
             }
         }
     }
@@ -76,16 +69,16 @@ public class RexpaintGeneratedTests
     {
         var path = NativeTestAssetPaths.NativeData("rexpaint", "test.xp");
         var loaded = new nint[1];
-        var loadedCount = LibraryImportMethods.TCOD_load_xp_array(path, loaded.Length, loaded);
+        var loadedCount = TCOD_load_xp(path, loaded.Length, loaded);
         Assert.Equal(1, loadedCount);
         Assert.NotEqual(nint.Zero, loaded[0]);
 
         try
         {
-            Assert.Equal('T', LibraryImportMethods.TCOD_console_get_char(loaded[0], 0, 0));
-            Assert.Equal('e', LibraryImportMethods.TCOD_console_get_char(loaded[0], 1, 0));
-            Assert.Equal('s', LibraryImportMethods.TCOD_console_get_char(loaded[0], 2, 0));
-            Assert.Equal('t', LibraryImportMethods.TCOD_console_get_char(loaded[0], 3, 0));
+            Assert.Equal('T', TCOD_console_get_char(loaded[0], 0, 0));
+            Assert.Equal('e', TCOD_console_get_char(loaded[0], 1, 0));
+            Assert.Equal('s', TCOD_console_get_char(loaded[0], 2, 0));
+            Assert.Equal('t', TCOD_console_get_char(loaded[0], 3, 0));
 
             Assert.Equal(
                 new TCOD_ColorRGB
@@ -94,7 +87,7 @@ public class RexpaintGeneratedTests
                     g = 0,
                     b = 0,
                 },
-                LibraryImportMethods.TCOD_console_get_char_background(loaded[0], 0, 1)
+                TCOD_console_get_char_background(loaded[0], 0, 1)
             );
             Assert.Equal(
                 new TCOD_ColorRGB
@@ -103,7 +96,7 @@ public class RexpaintGeneratedTests
                     g = 255,
                     b = 0,
                 },
-                LibraryImportMethods.TCOD_console_get_char_background(loaded[0], 1, 1)
+                TCOD_console_get_char_background(loaded[0], 1, 1)
             );
             Assert.Equal(
                 new TCOD_ColorRGB
@@ -112,16 +105,16 @@ public class RexpaintGeneratedTests
                     g = 0,
                     b = 255,
                 },
-                LibraryImportMethods.TCOD_console_get_char_background(loaded[0], 2, 1)
+                TCOD_console_get_char_background(loaded[0], 2, 1)
             );
             Assert.Equal(
                 TCOD_ColorRGB.TCOD_black,
-                LibraryImportMethods.TCOD_console_get_char_background(loaded[0], 3, 1)
+                TCOD_console_get_char_background(loaded[0], 3, 1)
             );
         }
         finally
         {
-            LibraryImportMethods.TCOD_console_delete(loaded[0]);
+            TCOD_console_delete(loaded[0]);
         }
     }
 
@@ -131,7 +124,7 @@ public class RexpaintGeneratedTests
         {
             for (int x = 0; x < 3; ++x)
             {
-                LibraryImportMethods.TCOD_console_put_rgb_struct(
+                TCOD_console_put_rgb(
                     console,
                     x,
                     y,
@@ -164,13 +157,13 @@ public class RexpaintGeneratedTests
         byte fgB
     )
     {
-        Assert.Equal(ch, LibraryImportMethods.TCOD_console_get_char(console, x, y));
-        var foreground = LibraryImportMethods.TCOD_console_get_char_foreground(console, x, y);
+        Assert.Equal(ch, TCOD_console_get_char(console, x, y));
+        var foreground = TCOD_console_get_char_foreground(console, x, y);
         Assert.Equal(fgR, foreground.r);
         Assert.Equal(fgG, foreground.g);
         Assert.Equal(fgB, foreground.b);
 
-        var background = LibraryImportMethods.TCOD_console_get_char_background(console, x, y);
+        var background = TCOD_console_get_char_background(console, x, y);
         Assert.Equal((byte)10, background.r);
         Assert.Equal((byte)20, background.g);
         Assert.Equal((byte)30, background.b);
