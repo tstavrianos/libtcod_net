@@ -144,7 +144,7 @@ public static partial class libtcod
         CallingConvention = CallingConvention.Cdecl,
         ExactSpelling = true
     )]
-    public static extern int TCOD_console_draw_frame_rgb(
+    public static extern TCOD_Error TCOD_console_draw_frame_rgb(
         nint con,
         int x,
         int y,
@@ -162,7 +162,7 @@ public static partial class libtcod
         CallingConvention = CallingConvention.Cdecl,
         ExactSpelling = true
     )]
-    public static extern int TCOD_console_draw_frame_rgb(
+    public static extern TCOD_Error TCOD_console_draw_frame_rgb(
         nint con,
         int x,
         int y,

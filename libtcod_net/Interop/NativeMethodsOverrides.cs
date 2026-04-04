@@ -309,7 +309,7 @@ public static partial class libtcod
         }
     }
 
-    public static int TCOD_console_draw_frame_rgb(
+    public static TCOD_Error TCOD_console_draw_frame_rgb(
         nint con,
         int x,
         int y,
@@ -359,7 +359,7 @@ public static partial class libtcod
         }
     }
 
-    public static int TCOD_console_draw_frame_rgb(
+    public static TCOD_Error TCOD_console_draw_frame_rgb(
         nint con,
         int x,
         int y,
