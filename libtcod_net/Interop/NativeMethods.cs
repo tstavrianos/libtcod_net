@@ -127,21 +127,6 @@ public static partial class libtcod
         CallingConvention = CallingConvention.Cdecl,
         ExactSpelling = true
     )]
-    public static extern void TCOD_console_put_rgb(
-        nint console,
-        int x,
-        int y,
-        int ch,
-        in TCOD_ColorRGB fg,
-        in TCOD_ColorRGB bg,
-        TCOD_bkgnd_flag_t flag
-    );
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
     public static extern TCOD_Error TCOD_console_draw_rect_rgb(
         nint console,
         int x,
@@ -151,23 +136,6 @@ public static partial class libtcod
         int ch,
         nint fg,
         nint bg,
-        TCOD_bkgnd_flag_t flag
-    );
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
-    public static extern TCOD_Error TCOD_console_draw_rect_rgb(
-        nint console,
-        int x,
-        int y,
-        int width,
-        int height,
-        int ch,
-        in TCOD_ColorRGB fg,
-        in TCOD_ColorRGB bg,
         TCOD_bkgnd_flag_t flag
     );
 
@@ -200,9 +168,9 @@ public static partial class libtcod
         int y,
         int width,
         int height,
-        nint decoration,
-        in TCOD_ColorRGB fg,
-        in TCOD_ColorRGB bg,
+        [In] int[] decoration,
+        nint fg,
+        nint bg,
         TCOD_bkgnd_flag_t flag,
         [MarshalAs(UnmanagedType.I1)] bool clear
     );

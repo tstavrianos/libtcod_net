@@ -224,4 +224,188 @@ public static partial class libtcod
                 Marshal.FreeHGlobal(marshal);
         }
     }
+
+    public static void TCOD_console_put_rgb(
+        nint console,
+        int x,
+        int y,
+        int ch,
+        TCOD_ColorRGB? fg,
+        TCOD_ColorRGB? bg,
+        TCOD_bkgnd_flag_t flag
+    )
+    {
+        nint marshalFg = nint.Zero,
+            marshalBg = nint.Zero;
+        try
+        {
+            if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
+            if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
+
+            TCOD_console_put_rgb(console, x, y, ch, marshalFg, marshalBg, flag);
+        }
+        finally
+        {
+            if (marshalFg != nint.Zero)
+                Marshal.FreeHGlobal(marshalFg);
+            if (marshalBg != nint.Zero)
+                Marshal.FreeHGlobal(marshalBg);
+        }
+    }
+
+    public static TCOD_Error TCOD_console_draw_rect_rgb(
+        nint console,
+        int x,
+        int y,
+        int width,
+        int height,
+        int ch,
+        TCOD_ColorRGB? fg,
+        TCOD_ColorRGB? bg,
+        TCOD_bkgnd_flag_t flag
+    )
+    {
+        nint marshalFg = nint.Zero,
+            marshalBg = nint.Zero;
+        try
+        {
+            if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
+            if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
+
+            return TCOD_console_draw_rect_rgb(
+                console,
+                x,
+                y,
+                width,
+                height,
+                ch,
+                marshalFg,
+                marshalBg,
+                flag
+            );
+        }
+        finally
+        {
+            if (marshalFg != nint.Zero)
+                Marshal.FreeHGlobal(marshalFg);
+            if (marshalBg != nint.Zero)
+                Marshal.FreeHGlobal(marshalBg);
+        }
+    }
+
+    public static int TCOD_console_draw_frame_rgb(
+        nint con,
+        int x,
+        int y,
+        int width,
+        int height,
+        nint decoration,
+        TCOD_ColorRGB? fg,
+        TCOD_ColorRGB? bg,
+        TCOD_bkgnd_flag_t flag,
+        bool clear
+    )
+    {
+        nint marshalFg = nint.Zero,
+            marshalBg = nint.Zero;
+        try
+        {
+            if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
+            if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
+
+            return TCOD_console_draw_frame_rgb(
+                con,
+                x,
+                y,
+                width,
+                height,
+                decoration,
+                marshalFg,
+                marshalBg,
+                flag,
+                clear
+            );
+        }
+        finally
+        {
+            if (marshalFg != nint.Zero)
+                Marshal.FreeHGlobal(marshalFg);
+            if (marshalBg != nint.Zero)
+                Marshal.FreeHGlobal(marshalBg);
+        }
+    }
+
+    public static int TCOD_console_draw_frame_rgb(
+        nint con,
+        int x,
+        int y,
+        int width,
+        int height,
+        int[] decoration,
+        TCOD_ColorRGB? fg,
+        TCOD_ColorRGB? bg,
+        TCOD_bkgnd_flag_t flag,
+        bool clear
+    )
+    {
+        nint marshalFg = nint.Zero,
+            marshalBg = nint.Zero;
+        try
+        {
+            if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
+            if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
+
+            return TCOD_console_draw_frame_rgb(
+                con,
+                x,
+                y,
+                width,
+                height,
+                decoration,
+                marshalFg,
+                marshalBg,
+                flag,
+                clear
+            );
+        }
+        finally
+        {
+            if (marshalFg != nint.Zero)
+                Marshal.FreeHGlobal(marshalFg);
+            if (marshalBg != nint.Zero)
+                Marshal.FreeHGlobal(marshalBg);
+        }
+    }
 }
