@@ -26,12 +26,17 @@ public static partial class libtcod
             marshalBg = nint.Zero;
         try
         {
-            marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
-            marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
             if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
             if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
+
             return TCOD_console_printn(
                 console,
                 x,
@@ -70,12 +75,16 @@ public static partial class libtcod
             marshalBg = nint.Zero;
         try
         {
-            marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
-            marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
             if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
             if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
             return TCOD_console_printn_rect(
                 console,
                 x,
@@ -116,12 +125,16 @@ public static partial class libtcod
             marshalBg = nint.Zero;
         try
         {
-            marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
-            marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
             if (fg.HasValue)
+            {
+                marshalFg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)fg.Value, marshalFg, false);
+            }
             if (bg.HasValue)
+            {
+                marshalBg = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
                 Marshal.StructureToPtr((object)bg.Value, marshalBg, false);
+            }
             var p = new TCOD_PrintParamsRGB()
             {
                 x = x,
@@ -167,5 +180,48 @@ public static partial class libtcod
     public static int TCOD_console_get_height_rect_wn(int width, string str)
     {
         return TCOD_console_get_height_rect_wn(width, (nuint)Encoding.UTF8.GetByteCount(str), str);
+    }
+
+    public static void TCOD_console_blit_key_color(
+        nint src,
+        int xSrc,
+        int ySrc,
+        int wSrc,
+        int hSrc,
+        nint dst,
+        int xDst,
+        int yDst,
+        float foreground_alpha,
+        float background_alpha,
+        TCOD_ColorRGB? key_color
+    )
+    {
+        nint marshal = nint.Zero;
+        try
+        {
+            if (key_color.HasValue)
+            {
+                marshal = Marshal.AllocHGlobal(Marshal.SizeOf<TCOD_ColorRGB>());
+                Marshal.StructureToPtr((object)key_color.Value, marshal, false);
+            }
+            TCOD_console_blit_key_color(
+                src,
+                xSrc,
+                ySrc,
+                wSrc,
+                hSrc,
+                dst,
+                xDst,
+                yDst,
+                foreground_alpha,
+                background_alpha,
+                marshal
+            );
+        }
+        finally
+        {
+            if (marshal != nint.Zero)
+                Marshal.FreeHGlobal(marshal);
+        }
     }
 }
