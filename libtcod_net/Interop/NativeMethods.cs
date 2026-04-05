@@ -367,7 +367,7 @@ public static partial class libtcod
         int yFrom,
         int xTo,
         int yTo,
-        out TCOD_bresenham_data_t data
+        ref TCOD_bresenham_data_t data
     );
 
     [DllImport(
