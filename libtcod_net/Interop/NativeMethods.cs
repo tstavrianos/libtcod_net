@@ -434,7 +434,7 @@ public static partial class libtcod
     )]
     public static extern TCOD_Error TCOD_context_save_screenshot(
         nint context,
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string? filename
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string filename
     );
 
     [DllImport(
