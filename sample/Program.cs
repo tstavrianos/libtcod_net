@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static libtcod.Interop.libtcod;
+using static libtcod_net.libtcod;
 using static SDL3.SDL;
 
 var tcodTileset = TCOD_tileset_load(

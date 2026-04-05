@@ -1,5 +1,5 @@
 using System.Text;
-using static libtcod.Interop.libtcod;
+using static libtcod_net.libtcod;
 
 namespace libtcod_net.Tests;
 

@@ -5,7 +5,7 @@ namespace libtcod_net.Tests;
 
 public class InteropMetadataTests
 {
-    private static readonly Type InteropType = typeof(libtcod.Interop.libtcod);
+    private static readonly Type InteropType = typeof(libtcod);
 
     [Theory]
     [InlineData("TCOD_random_get_instance", 1)]

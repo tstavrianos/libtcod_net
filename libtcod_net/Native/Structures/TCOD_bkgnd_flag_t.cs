@@ -1,0 +1,22 @@
+﻿namespace libtcod_net;
+
+public static partial class libtcod
+{
+    public enum TCOD_bkgnd_flag_t
+    {
+        TCOD_BKGND_NONE = 0,
+        TCOD_BKGND_SET = 1,
+        TCOD_BKGND_MULTIPLY = 2,
+        TCOD_BKGND_LIGHTEN = 3,
+        TCOD_BKGND_DARKEN = 4,
+        TCOD_BKGND_SCREEN = 5,
+        TCOD_BKGND_COLOR_DODGE = 6,
+        TCOD_BKGND_COLOR_BURN = 7,
+        TCOD_BKGND_ADD = 8,
+        TCOD_BKGND_ADDA = 9,
+        TCOD_BKGND_BURN = 10,
+        TCOD_BKGND_OVERLAY = 11,
+        TCOD_BKGND_ALPH = 12,
+        TCOD_BKGND_DEFAULT = 13,
+    }
+}
