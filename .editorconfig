@@ -59,6 +59,7 @@ resharper_partial_type_with_single_part_highlighting = none
 resharper_unused_parameter_in_partial_method_highlighting = none
 resharper_redundant_nullness_attribute_with_nullable_reference_types_highlighting = error
 resharper_annotation_redundancy_in_hierarchy_highlighting = error
+resharper_inconsistent_naming_highlighting = none
 
 [*.{slnx,appxmanifest,axml,blockshader,c,c++,c++m,cc,ccm,cginc,compute,config,cp,cpp,cppm,cql,csproj,cu,cuh,cxx,cxxm,dbml,discomap,dtd,fx,fxh,h,h++,hh,hlsl,hlsli,hlslinc,hp,hpp,hxx,icc,inc,inl,ino,ipp,ixx,jsproj,lsproj,mpp,mq4,mq5,mqh,mxx,njsproj,nuspec,proj,props,pssl,pssli,resw,resx,shader,shaderFoundry,sql,StyleCop,targets,tasks,tcc,tpp,urtshader,usf,ush,uxml,vbproj,xml,xsd}]
 indent_style = tab
