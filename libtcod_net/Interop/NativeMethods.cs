@@ -535,19 +535,6 @@ public static partial class libtcod
         int columns,
         int rows,
         int n,
-        [In] int[] charmap
-    );
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
-    public static extern nint TCOD_tileset_load(
-        [MarshalAs(UnmanagedType.LPUTF8Str)] string filename,
-        int columns,
-        int rows,
-        int n,
         nint charmap
     );
 
@@ -557,41 +544,12 @@ public static partial class libtcod
         ExactSpelling = true
     )]
     public static extern nint TCOD_tileset_load_mem(
-        nint buffer_length,
+        nuint buffer_length,
         nint buffer,
         int columns,
         int rows,
         int n,
         nint charmap
-    );
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
-    public static extern nint TCOD_tileset_load_mem(
-        nint buffer_length,
-        [In] byte[] buffer,
-        int columns,
-        int rows,
-        int n,
-        [In] int[] charmap
-    );
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
-    public static extern nint TCOD_tileset_load_raw(
-        int width,
-        int height,
-        [In] TCOD_ColorRGBA[] pixels,
-        int columns,
-        int rows,
-        int n,
-        [In] int[] charmap
     );
 
     [DllImport(
@@ -629,13 +587,6 @@ public static partial class libtcod
         ExactSpelling = true
     )]
     public static extern nint TCOD_load_bdf_memory(int size, nint buffer);
-
-    [DllImport(
-        DllImportNativeLib,
-        CallingConvention = CallingConvention.Cdecl,
-        ExactSpelling = true
-    )]
-    public static extern nint TCOD_load_bdf_memory(int size, [In] byte[] buffer);
 
     [DllImport(
         DllImportNativeLib,
@@ -895,7 +846,7 @@ public static partial class libtcod
         CallingConvention = CallingConvention.Cdecl,
         ExactSpelling = true
     )]
-    public static extern int TCOD_save_xp(
+    public static extern TCOD_Error TCOD_save_xp(
         int n,
         nint consoles,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string path,
@@ -1615,7 +1566,19 @@ public static partial class libtcod
     )]
     public static extern TCOD_Error TCOD_frontier_push(
         nint frontier,
-        int[] index,
+        nint index,
+        int dist,
+        int heuristic
+    );
+
+    [DllImport(
+        DllImportNativeLib,
+        CallingConvention = CallingConvention.Cdecl,
+        ExactSpelling = true
+    )]
+    public static extern TCOD_Error TCOD_frontier_push(
+        nint frontier,
+        [In] int[] index,
         int dist,
         int heuristic
     );
@@ -2153,8 +2116,8 @@ public static partial class libtcod
     )]
     public static extern void TCOD_heightmap_dig_bezier(
         nint hm,
-        [In] int[] px,
-        [In] int[] py,
+        nint px,
+        nint py,
         float startRadius,
         float startDepth,
         float endRadius,
@@ -2182,9 +2145,9 @@ public static partial class libtcod
     public static extern void TCOD_heightmap_kernel_transform(
         nint hm,
         int kernel_size,
-        [In] int[] dx,
-        [In] int[] dy,
-        [In] float[] weight,
+        nint dx,
+        nint dy,
+        nint weight,
         float minLevel,
         float maxLevel
     );

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace libtcod.Interop;
 
@@ -7,6 +8,7 @@ public static partial class libtcod
     [StructLayout(LayoutKind.Sequential)]
     public struct TCOD_ContextParams
     {
+        [Obsolete]
         public int tcod_version;
         public int window_x;
         public int window_y;
@@ -19,8 +21,7 @@ public static partial class libtcod
         public int vsync;
         public int sdl_window_flags;
 
-        [MarshalAs(UnmanagedType.LPUTF8Str)]
-        public string window_title;
+        public nint window_title;
         public int argc;
         public nint argv;
         public nint cli_output;

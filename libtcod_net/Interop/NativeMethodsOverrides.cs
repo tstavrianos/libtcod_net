@@ -1,5 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
+using libtcod.TCOD;
 
 namespace libtcod.Interop;
 
@@ -407,5 +409,208 @@ public static partial class libtcod
             if (marshalBg != nint.Zero)
                 Marshal.FreeHGlobal(marshalBg);
         }
+    }
+
+    public static unsafe nint TCOD_tileset_load(
+        string filename,
+        int columns,
+        int rows,
+        ReadOnlySpan<int> charmap
+    )
+    {
+        fixed (int* c = charmap)
+        {
+            return TCOD_tileset_load(filename, columns, rows, charmap.Length, (nint)c);
+        }
+    }
+
+    public static nint TCOD_tileset_load(string filename, int columns, int rows, int[] charmap)
+    {
+        return TCOD_tileset_load(filename, columns, rows, charmap.AsSpan());
+    }
+
+    public static unsafe nint TCOD_tileset_load_mem(
+        ReadOnlySpan<byte> buffer,
+        int columns,
+        int rows,
+        ReadOnlySpan<int> charmap
+    )
+    {
+        fixed (byte* b = buffer)
+        fixed (int* c = charmap)
+            return TCOD_tileset_load_mem(
+                (nuint)buffer.Length,
+                (nint)b,
+                columns,
+                rows,
+                charmap.Length,
+                (nint)c
+            );
+    }
+
+    public static nint TCOD_tileset_load_mem(byte[] buffer, int columns, int rows, int[] charmap)
+    {
+        return TCOD_tileset_load_mem(buffer.AsSpan(), columns, rows, charmap.AsSpan());
+    }
+
+    public static unsafe nint TCOD_tileset_load_raw(
+        int width,
+        int height,
+        ReadOnlySpan<TCOD_ColorRGBA> pixels,
+        int columns,
+        int rows,
+        ReadOnlySpan<int> charmap
+    )
+    {
+        fixed (TCOD_ColorRGBA* p = pixels)
+        fixed (int* c = charmap)
+            return TCOD_tileset_load_raw(
+                width,
+                height,
+                (nint)p,
+                columns,
+                rows,
+                charmap.Length,
+                (nint)c
+            );
+    }
+
+    public static nint TCOD_tileset_load_raw(
+        int width,
+        int height,
+        TCOD_ColorRGBA[] pixels,
+        int columns,
+        int rows,
+        int[] charmap
+    )
+    {
+        return TCOD_tileset_load_raw(
+            width,
+            height,
+            pixels.AsSpan(),
+            columns,
+            rows,
+            charmap.AsSpan()
+        );
+    }
+
+    public static unsafe nint TCOD_load_bdf_memory(ReadOnlySpan<byte> buffer)
+    {
+        fixed (byte* b = buffer)
+            return TCOD_load_bdf_memory(buffer.Length, (nint)b);
+    }
+
+    public static nint TCOD_load_bdf_memory(byte[] buffer)
+    {
+        return TCOD_load_bdf_memory(buffer.AsSpan());
+    }
+
+    public static unsafe void TCOD_heightmap_dig_bezier(
+        nint hm,
+        ReadOnlySpan<int> px,
+        ReadOnlySpan<int> py,
+        float startRadius,
+        float startDepth,
+        float endRadius,
+        float endDepth
+    )
+    {
+        if (px.Length < 4 || py.Length < 4)
+            throw new TCODException(
+                "px and py should contain at least 4 elements each",
+                TCOD_Error.TCOD_E_ERROR
+            );
+        fixed (int* x = px)
+        fixed (int* y = py)
+            TCOD_heightmap_dig_bezier(
+                hm,
+                (nint)x,
+                (nint)y,
+                startRadius,
+                startDepth,
+                endRadius,
+                endDepth
+            );
+    }
+
+    public static void TCOD_heightmap_dig_bezier(
+        nint hm,
+        int[] px,
+        int[] py,
+        float startRadius,
+        float startDepth,
+        float endRadius,
+        float endDepth
+    )
+    {
+        TCOD_heightmap_dig_bezier(
+            hm,
+            px.AsSpan(),
+            py.AsSpan(),
+            startRadius,
+            startDepth,
+            endRadius,
+            endDepth
+        );
+    }
+
+    public static unsafe void TCOD_heightmap_kernel_transform(
+        nint hm,
+        int kernel_size,
+        ReadOnlySpan<int> dx,
+        ReadOnlySpan<int> dy,
+        ReadOnlySpan<float> weight,
+        float minLevel,
+        float maxLevel
+    )
+    {
+        if (dx.Length < kernel_size)
+            throw new TCODException(
+                $"dx should contain at least {kernel_size} elements",
+                TCOD_Error.TCOD_E_ERROR
+            );
+        if (dy.Length < kernel_size)
+            throw new TCODException(
+                $"dy should contain at least {kernel_size} elements",
+                TCOD_Error.TCOD_E_ERROR
+            );
+        if (weight.Length < kernel_size)
+            throw new TCODException(
+                $"weight should contain at least {kernel_size} elements",
+                TCOD_Error.TCOD_E_ERROR
+            );
+        fixed (int* x = dx)
+        fixed (int* y = dy)
+        fixed (float* w = weight)
+            TCOD_heightmap_kernel_transform(
+                hm,
+                kernel_size,
+                (nint)x,
+                (nint)y,
+                (nint)w,
+                minLevel,
+                maxLevel
+            );
+    }
+
+    public static void TCOD_heightmap_kernel_transform(
+        nint hm,
+        int kernel_size,
+        int[] dx,
+        int[] dy,
+        float[] weight,
+        float minLevel,
+        float maxLevel
+    )
+    {
+        TCOD_heightmap_kernel_transform(
+            hm,
+            kernel_size,
+            dx.AsSpan(),
+            dy.AsSpan(),
+            weight.AsSpan(),
+            minLevel,
+            maxLevel
+        );
     }
 }

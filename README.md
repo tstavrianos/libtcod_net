@@ -20,3 +20,10 @@ vcpkg install libtcod --triplet=x86-windows
 ```
 
 After that, I copied the dll and pbd files from vcpkg/installed/x64-windows/bin and vcpkg/installed/x64-windows/debug/bin (and same for x86).
+
+## TODO
+
+* Figure out why the code generated from CppSharp compiles but does not run. (very low on my list)
+* Review the unit tests and try and include something that covers as much surface as possible.
+* Managed wrapper classes.
+* Expand the overloads as required.
