@@ -154,11 +154,11 @@ public sealed unsafe class Path : TCODResource<TCOD_Path>
     /// Get the coordinates at a specific step in the path. Check StepCount to determine the valid range of indices.
     /// </summary>
     /// <param name="index">The index of the step to retrieve.</param>
-    /// <returns>A tuple containing the x and y coordinates of the specified step.</returns>
+    /// <returns>A tuple containing the x and y coordinates of the specified step. If the index is out of range, the tuple will contain (-1, -1).</returns>
     public (int X, int Y) GetStep(int index)
     {
-        int x,
-            y;
+        int x = -1,
+            y = -1;
         TCOD_path_get(Pointer, index, &x, &y);
         return (x, y);
     }
@@ -167,11 +167,11 @@ public sealed unsafe class Path : TCODResource<TCOD_Path>
     /// Gets the coordinates of the current origin of the path.
     /// </summary>
     /// <remarks>The origin changes as the path is walked.</remarks>
-    /// <returns>A tuple containing the x and y coordinates of the origin.</returns>
+    /// <returns>A tuple containing the x and y coordinates of the origin. If the origin is not set, the tuple will contain (-1, -1).</returns>
     public (int X, int Y) GetOrigin()
     {
-        int x,
-            y;
+        int x = -1,
+            y = -1;
         TCOD_path_get_origin(Pointer, &x, &y);
         return (x, y);
     }
@@ -179,11 +179,11 @@ public sealed unsafe class Path : TCODResource<TCOD_Path>
     /// <summary>
     /// Gets the coordinates of the destination of the path.
     /// </summary>
-    /// <returns>A tuple containing the x and y coordinates of the destination.</returns>
+    /// <returns>A tuple containing the x and y coordinates of the destination. If the destination is not set, the tuple will contain (-1, -1).</returns>
     public (int X, int Y) GetDestination()
     {
-        int x,
-            y;
+        int x = -1,
+            y = -1;
         TCOD_path_get_destination(Pointer, &x, &y);
         return (x, y);
     }
