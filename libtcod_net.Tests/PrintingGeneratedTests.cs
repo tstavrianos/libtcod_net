@@ -2,13 +2,13 @@ using static libtcod_net.libtcod;
 
 namespace libtcod_net.Tests;
 
-public class PrintingGeneratedTests
+public unsafe class PrintingGeneratedTests
 {
     [Fact]
     public void ConsolePrintnRect_ZeroRectAlignmentsMatchNativeExpectation()
     {
         var console = TCOD_console_new(12, 1);
-        Assert.NotEqual(nint.Zero, console);
+        Assert.False(console == null);
 
         try
         {
@@ -22,9 +22,9 @@ public class PrintingGeneratedTests
                 0,
                 0,
                 len,
-                "123",
-                nint.Zero,
-                nint.Zero,
+                "123"u8,
+                null,
+                null,
                 TCOD_bkgnd_flag_t.TCOD_BKGND_NONE,
                 TCOD_alignment_t.TCOD_LEFT
             );
@@ -35,9 +35,9 @@ public class PrintingGeneratedTests
                 0,
                 0,
                 len,
-                "123",
-                nint.Zero,
-                nint.Zero,
+                "123"u8,
+                null,
+                null,
                 TCOD_bkgnd_flag_t.TCOD_BKGND_NONE,
                 TCOD_alignment_t.TCOD_CENTER
             );
@@ -48,9 +48,9 @@ public class PrintingGeneratedTests
                 0,
                 0,
                 len,
-                "123",
-                nint.Zero,
-                nint.Zero,
+                "123"u8,
+                null,
+                null,
                 TCOD_bkgnd_flag_t.TCOD_BKGND_NONE,
                 TCOD_alignment_t.TCOD_RIGHT
             );
@@ -67,7 +67,7 @@ public class PrintingGeneratedTests
     public void PrintParamsRgb_PositionsCharactersAsInNativeTest()
     {
         var console = TCOD_console_new(4, 1);
-        Assert.NotEqual(nint.Zero, console);
+        Assert.False(console == null);
 
         try
         {
@@ -77,11 +77,11 @@ public class PrintingGeneratedTests
             @params.flag = TCOD_bkgnd_flag_t.TCOD_BKGND_NONE;
             @params.alignment = TCOD_alignment_t.TCOD_LEFT;
 
-            TCOD_printn_rgb(console, @params, 1, "A");
+            TCOD_printn_rgb(console, @params, 1, "A"u8);
             Assert.Equal(" A  ", ConsoleRowToString(console, 4, 0));
 
             @params.x = 2;
-            TCOD_printn_rgb(console, @params, 1, "B");
+            TCOD_printn_rgb(console, @params, 1, "B"u8);
             Assert.Equal(" AB ", ConsoleRowToString(console, 4, 0));
         }
         finally
@@ -90,8 +90,10 @@ public class PrintingGeneratedTests
         }
     }
 
-    private static void FillConsole(nint console, int width, int height, int ch)
+    private static void FillConsole(TCOD_Console* console, int width, int height, int ch)
     {
+        var white = TCOD_ColorRGB.TCOD_white;
+        var black = TCOD_ColorRGB.TCOD_black;
         for (int y = 0; y < height; ++y)
         {
             for (int x = 0; x < width; ++x)
@@ -101,15 +103,15 @@ public class PrintingGeneratedTests
                     x,
                     y,
                     ch,
-                    TCOD_ColorRGB.TCOD_white,
-                    TCOD_ColorRGB.TCOD_black,
+                    &white,
+                    &black,
                     TCOD_bkgnd_flag_t.TCOD_BKGND_SET
                 );
             }
         }
     }
 
-    private static string ConsoleRowToString(nint console, int width, int row)
+    private static string ConsoleRowToString(TCOD_Console* console, int width, int row)
     {
         var chars = new char[width];
         for (int x = 0; x < width; ++x)

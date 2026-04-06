@@ -19,15 +19,6 @@ public class InteropAbiSanityTests
     }
 
     [Fact]
-    public void BasicStructs_AreSequential()
-    {
-        Assert.Equal(LayoutKind.Sequential, typeof(TCOD_Heap).StructLayoutAttribute?.Value);
-        Assert.Equal(LayoutKind.Sequential, typeof(TCOD_ArrayData).StructLayoutAttribute?.Value);
-        Assert.Equal(LayoutKind.Sequential, typeof(TCOD_BasicGraph2D).StructLayoutAttribute?.Value);
-        Assert.Equal(LayoutKind.Sequential, typeof(TCOD_Pathfinder).StructLayoutAttribute?.Value);
-    }
-
-    [Fact]
     public void RandomAndNoiseEnums_HaveExpectedValues()
     {
         Assert.Equal(0, (int)TCOD_random_algo_t.TCOD_RNG_MT);

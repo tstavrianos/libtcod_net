@@ -1,14 +1,16 @@
+using System.Runtime.InteropServices;
+using Interop.Runtime;
 using static libtcod_net.libtcod;
 
 namespace libtcod_net.Tests;
 
-public class ImageGeneratedTests
+public unsafe class ImageGeneratedTests
 {
     [Fact]
     public void ImageNewAndPixelOperations_MatchNativeCoverage()
     {
         var image = TCOD_image_new(3, 2);
-        Assert.NotEqual(nint.Zero, image);
+        Assert.False(image == null);
 
         try
         {
@@ -26,7 +28,9 @@ public class ImageGeneratedTests
 
             Assert.Equal(pixel, TCOD_image_get_pixel(image, 0, 0));
 
-            TCOD_image_get_size(image, out var width, out var height);
+            int width,
+                height;
+            TCOD_image_get_size(image, &width, &height);
             Assert.Equal(3, width);
             Assert.Equal(2, height);
         }
@@ -39,13 +43,18 @@ public class ImageGeneratedTests
     [Fact]
     public void ImageLoadPng_LoadsNativeFixture()
     {
+        using var allocator = new ArenaNativeAllocator(1024);
         var path = NativeTestAssetPaths.NativeData("img", "circle.png");
-        var image = TCOD_image_load(path);
-        Assert.NotEqual(nint.Zero, image);
+        var pathPtr = CString.FromString(allocator, path);
+        var image = TCOD_image_load(pathPtr);
+        allocator.Free(pathPtr);
+        Assert.False(image == null);
 
         try
         {
-            TCOD_image_get_size(image, out var width, out var height);
+            int width,
+                height;
+            TCOD_image_get_size(image, &width, &height);
             Assert.True(width > 0);
             Assert.True(height > 0);
         }

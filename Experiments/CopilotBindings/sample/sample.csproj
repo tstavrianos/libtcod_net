@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\libtcod_net\libtcod_net.csproj" />
+		<ProjectReference Include="..\SDL3-CS\SDL3\SDL3.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\Requirements\Release\Bin\x64\*.*" CopyToOutputDirectory="Always" />
+		<None Include="terminal.png" CopyToOutputDirectory="Always" />
+		<None Include="RDE_vector_32x32_gs_ro_transparent.png" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+</Project>

@@ -1,21 +1,23 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Interop.Runtime;
 using static libtcod_net.libtcod;
 
 namespace libtcod_net.Tests;
 
-public class BspGeneratedTests
+public unsafe class BspGeneratedTests
 {
     [Fact]
     public void BspTraversal_PreOrderMatchesExpectedStructure()
     {
         var root = TCOD_bsp_new();
-        Assert.NotEqual(nint.Zero, root);
+        Assert.False(root == null);
 
         try
         {
             TCOD_bsp_split_once(root, false, 0);
             var left = TCOD_bsp_left(root);
-            Assert.NotEqual(nint.Zero, left);
+            Assert.False(left == null);
 
             TCOD_bsp_split_once(left, false, 0);
 
@@ -23,31 +25,50 @@ public class BspGeneratedTests
             var leftRight = TCOD_bsp_right(left);
             var right = TCOD_bsp_right(root);
 
-            Assert.NotEqual(nint.Zero, leftLeft);
-            Assert.NotEqual(nint.Zero, leftRight);
-            Assert.NotEqual(nint.Zero, right);
+            Assert.False(leftLeft == null);
+            Assert.False(leftRight == null);
+            Assert.False(right == null);
 
             var visited = new List<TCOD_bsp_t>();
             using var scope = new CallbackScope(visited);
 
-            var preOrderOk = TCOD_bsp_traverse_pre_order(root, CollectNodePointers, scope.Handle);
+            var preOrderOk = TCOD_bsp_traverse_pre_order(
+                root,
+                new TCOD_bsp_callback_t(&CollectNodePointers),
+                scope.Handle.ToPointer()
+            );
 
-            Assert.True(preOrderOk);
+            Assert.True(preOrderOk != false);
             Assert.Equal(5, visited.Count);
-            Assert.Equal(nint.Zero, visited[0].tree.father);
-            Assert.Equal(root, visited[1].tree.father);
-            Assert.Equal(left, visited[2].tree.father);
-            Assert.Equal(left, visited[3].tree.father);
-            Assert.Equal(root, visited[4].tree.father);
+            Assert.True(visited[0].tree.father == null);
+            Assert.True(visited[1].tree.father == root);
+            Assert.True(visited[2].tree.father == left);
+            Assert.True(visited[3].tree.father == left);
+            Assert.True(visited[4].tree.father == root);
 
-            Assert.True(visited[2].tree.sons == nint.Zero || visited[2].tree.sons == leftLeft);
-            Assert.True(visited[3].tree.sons == nint.Zero || visited[3].tree.sons == leftRight);
-            Assert.True(visited[4].tree.sons == nint.Zero || visited[4].tree.sons == right);
+            Assert.True(visited[2].tree.sons == null || visited[2].tree.sons == leftLeft);
+            Assert.True(visited[3].tree.sons == null || visited[3].tree.sons == leftRight);
+            Assert.True(visited[4].tree.sons == null || visited[4].tree.sons == right);
 
-            Assert.True(TCOD_bsp_traverse_in_order(root, AlwaysContinue, nint.Zero));
-            Assert.True(TCOD_bsp_traverse_post_order(root, AlwaysContinue, nint.Zero));
-            Assert.True(TCOD_bsp_traverse_level_order(root, AlwaysContinue, nint.Zero));
-            Assert.True(TCOD_bsp_traverse_inverted_level_order(root, AlwaysContinue, nint.Zero));
+            Assert.True(
+                TCOD_bsp_traverse_in_order(root, new TCOD_bsp_callback_t(&AlwaysContinue), null)
+                    != false
+            );
+            Assert.True(
+                TCOD_bsp_traverse_post_order(root, new TCOD_bsp_callback_t(&AlwaysContinue), null)
+                    != false
+            );
+            Assert.True(
+                TCOD_bsp_traverse_level_order(root, new TCOD_bsp_callback_t(&AlwaysContinue), null)
+                    != false
+            );
+            Assert.True(
+                TCOD_bsp_traverse_inverted_level_order(
+                    root,
+                    new TCOD_bsp_callback_t(&AlwaysContinue),
+                    null
+                ) != false
+            );
         }
         finally
         {
@@ -55,16 +76,18 @@ public class BspGeneratedTests
         }
     }
 
-    private static bool AlwaysContinue(ref TCOD_bsp_t node, nint userData)
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
+    private static CBool AlwaysContinue(TCOD_bsp_t* node, void* userData)
     {
         return true;
     }
 
-    private static bool CollectNodePointers(ref TCOD_bsp_t node, nint userData)
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
+    private static CBool CollectNodePointers(TCOD_bsp_t* node, void* userData)
     {
-        var handle = GCHandle.FromIntPtr(userData);
+        var handle = GCHandle.FromIntPtr(new nint(userData));
         var list = (List<TCOD_bsp_t>)handle.Target!;
-        list.Add(node);
+        list.Add(*node);
         return true;
     }
 

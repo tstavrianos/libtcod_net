@@ -1,35 +1,40 @@
+using System.Runtime.InteropServices;
+using Interop.Runtime;
 using static libtcod_net.libtcod;
 
 namespace libtcod_net.Tests;
 
-public class InteropRuntimeSmokeTests
+public unsafe class InteropRuntimeSmokeTests
 {
     [Fact]
     public void RandomAndNoise_CanCreateAndSample()
     {
-        nint random = nint.Zero;
-        nint noise = nint.Zero;
+        TCOD_Random* random = null;
+        TCOD_Noise* noise = null;
 
         try
         {
             random = TCOD_random_new(TCOD_random_algo_t.TCOD_RNG_MT);
-            Assert.NotEqual(nint.Zero, random);
+            Assert.False(random == null);
 
             noise = TCOD_noise_new(2, 0.5f, 2.0f, random);
-            Assert.NotEqual(nint.Zero, noise);
+            Assert.False(noise == null);
 
-            var value = TCOD_noise_get(noise, new float[] { 0.1f, 0.2f });
+            var f = new float[] { 0.1f, 0.2f };
+            float value;
+            fixed (float* fPtr = f.AsSpan())
+                value = TCOD_noise_get(noise, fPtr);
             Assert.False(float.IsNaN(value));
             Assert.False(float.IsInfinity(value));
         }
         finally
         {
-            if (noise != nint.Zero)
+            if (noise != null)
             {
                 TCOD_noise_delete(noise);
             }
 
-            if (random != nint.Zero)
+            if (random != null)
             {
                 TCOD_random_delete(random);
             }
@@ -41,13 +46,17 @@ public class InteropRuntimeSmokeTests
     {
         var imagePath = Path.Combine(AppContext.BaseDirectory, "terminal.png");
         Assert.True(File.Exists(imagePath), $"Expected image file at {imagePath}");
-
-        var image = TCOD_image_load(imagePath);
-        Assert.NotEqual(nint.Zero, image);
+        using var allocator = new ArenaNativeAllocator(1024);
+        var imagePathPtr = CString.FromString(allocator, imagePath);
+        var image = TCOD_image_load(imagePathPtr);
+        allocator.Free(imagePathPtr);
+        Assert.False(image == null);
 
         try
         {
-            TCOD_image_get_size(image, out var width, out var height);
+            int width,
+                height;
+            TCOD_image_get_size(image, &width, &height);
             Assert.True(width > 0);
             Assert.True(height > 0);
         }
@@ -60,27 +69,27 @@ public class InteropRuntimeSmokeTests
     [Fact]
     public void MapPathAndDijkstra_CanComputeAndDelete()
     {
-        nint map = nint.Zero;
-        nint path = nint.Zero;
-        nint dijkstra = nint.Zero;
+        TCOD_Map* map = null;
+        TCOD_Path* path = null;
+        TCOD_Dijkstra* dijkstra = null;
 
         try
         {
             map = TCOD_map_new(10, 10);
-            Assert.NotEqual(nint.Zero, map);
+            Assert.False(map == null);
 
             TCOD_map_clear(map, true, true);
 
             path = TCOD_path_new_using_map(map, 1.41f);
-            Assert.NotEqual(nint.Zero, path);
+            Assert.False(path == null);
 
             var pathFound = TCOD_path_compute(path, 0, 0, 9, 9);
-            Assert.True(pathFound);
+            Assert.True(pathFound == true);
             var pathLength = TCOD_path_size(path);
             Assert.True(pathLength > 0);
 
             dijkstra = TCOD_dijkstra_new(map, 1.41f);
-            Assert.NotEqual(nint.Zero, dijkstra);
+            Assert.False(dijkstra == null);
 
             TCOD_dijkstra_compute(dijkstra, 0, 0);
             var dist = TCOD_dijkstra_get_distance(dijkstra, 9, 9);
@@ -89,17 +98,17 @@ public class InteropRuntimeSmokeTests
         }
         finally
         {
-            if (dijkstra != nint.Zero)
+            if (dijkstra != null)
             {
                 TCOD_dijkstra_delete(dijkstra);
             }
 
-            if (path != nint.Zero)
+            if (path != null)
             {
                 TCOD_path_delete(path);
             }
 
-            if (map != nint.Zero)
+            if (map != null)
             {
                 TCOD_map_delete(map);
             }
@@ -110,22 +119,29 @@ public class InteropRuntimeSmokeTests
     public void HeapAndPathfinder_CanInitializeAndDispose()
     {
         var heap = new TCOD_Heap();
-        var initResult = TCOD_heap_init(ref heap, (nuint)4);
+        var initResult = TCOD_heap_init(&heap, (nuint)4);
         Assert.True(initResult >= 0);
 
         Assert.True(heap.data_size >= 4);
 
-        var pushResult = TCOD_minheap_push(ref heap, 5, new byte[] { 11, 22, 33, 44 });
+        var data = new byte[] { 11, 22, 33, 44 };
+        int pushResult;
+        fixed (void* d = data.AsSpan())
+            pushResult = TCOD_minheap_push(&heap, 5, d);
         Assert.True(pushResult >= 0);
 
         var popped = new byte[4];
-        TCOD_minheap_pop(ref heap, popped);
+        fixed (void* p = popped.AsSpan())
+            TCOD_minheap_pop(&heap, p);
         Assert.Equal(new byte[] { 11, 22, 33, 44 }, popped);
 
-        TCOD_heap_uninit(ref heap);
+        TCOD_heap_uninit(&heap);
 
-        var pathfinder = TCOD_pf_new(2, new nuint[] { 8, 8 });
-        Assert.NotEqual(nint.Zero, pathfinder);
+        var slope = new ulong[] { 8, 8 };
+        TCOD_Pathfinder* pathfinder;
+        fixed (ulong* u = slope.AsSpan())
+            pathfinder = TCOD_pf_new(2, u);
+        Assert.False(pathfinder == null);
         TCOD_pf_delete(pathfinder);
     }
 }

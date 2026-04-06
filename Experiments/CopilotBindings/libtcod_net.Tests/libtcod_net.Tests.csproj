@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="6.0.4" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+		<PackageReference Include="xunit" Version="2.9.3" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\libtcod_net\libtcod_net.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\Requirements\Release\Bin\x64\*.*" CopyToOutputDirectory="Always" />
+		<None Include="..\sample\terminal.png" CopyToOutputDirectory="Always" />
+		<None
+			Include="..\sample\RDE_vector_32x32_gs_ro_transparent.png"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\img\circle.png"
+			Link="native-data\img\circle.png"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\fonts\terminal8x8_gs_ro.png"
+			Link="native-data\fonts\terminal8x8_gs_ro.png"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\fonts\dejavu8x8_gs_tc.png"
+			Link="native-data\fonts\dejavu8x8_gs_tc.png"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\fonts\Tamzen5x9r.bdf"
+			Link="native-data\fonts\Tamzen5x9r.bdf"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\fonts\ucs-fonts\4x6.bdf"
+			Link="native-data\fonts\ucs-fonts\4x6.bdf"
+			CopyToOutputDirectory="Always"
+		/>
+		<None
+			Include="..\native\libtcod\data\rexpaint\test.xp"
+			Link="native-data\rexpaint\test.xp"
+			CopyToOutputDirectory="Always"
+		/>
+	</ItemGroup>
+</Project>

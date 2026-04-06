@@ -1,0 +1,26 @@
+{
+  "targetFrameworkMoniker": "net10.0",
+  "inputFilePath": "./fixed.json",
+  "outputFileDirectory": "./Generated",
+  "namespaceName": "libtcod_net",
+  "className": "libtcod",
+  "libraryName": "libtcod",
+  "isEnabledGeneratingRuntimeCode": true,
+  "isEnabledVerifyCSharpCodeCompiles": false,
+  "mappedNames": [
+    { "source": "SDL_Rect*", "target": "void*" },
+    { "source": "SDL_Window*", "target": "void*" },
+    { "source": "SDL_Surface*", "target": "void*" },
+    { "source": "SDL_Texture*", "target": "void*" },
+    { "source": "SDL_Renderer*", "target": "void*" },
+    { "source": "SDL_Event*", "target": "void*" },
+    { "source": "SDL_Rect**", "target": "void**" },
+    { "source": "SDL_Window**", "target": "void**" },
+    { "source": "SDL_Surface**", "target": "void**" },
+    { "source": "SDL_Texture**", "target": "void**" },
+    { "source": "SDL_Renderer**", "target": "void**" },
+    { "source": "SDL_Event**", "target": "void**" },
+    { "source": "SDL_PropertiesID", "target": "uint" },
+    { "source": "TCOD_color_t", "target": "TCOD_ColorRGB" }
+]
+}

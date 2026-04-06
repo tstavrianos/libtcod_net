@@ -1,0 +1,54 @@
+{
+    "inputFilePath": "../native/libtcod/src/libtcod.h",
+    "userIncludeDirectories": [
+        "../native/libtcod/src",
+        "../native/SDL/include"
+    ],
+    "defines": {
+        "TCODLIB_API": "__attribute__ ((visibility(\"default\")))",
+        "TCOD_PUBLIC": "__attribute__ ((visibility(\"default\")))",
+        "TCOD_DEPRECATED(msg)": "__attribute__((deprecated(msg)))",
+        "TCOD_DEPRECATED_NOMESSAGE": "__attribute__((deprecated))",
+        "TCOD_DEPRECATED_ENUM": "__attribute__((deprecated))",
+        "LIBTCOD_EXPORTS": "1"
+    },    
+    "allowedNames": [
+        "^TCOD_.*$",
+        "COMMENT: Function Pointers",
+        ".* (.*)$"
+    ],
+    "blockedNames": [
+        "^SDL_.*$",
+        "^TCOD_set_errorf$",
+        "^TCOD_console_print$",
+        "^TCOD_console_print_ex$",
+        "^TCOD_console_print_rect$",
+        "^TCOD_console_print_rect_ex$",
+        "^TCOD_console_print_frame$",
+        "^TCOD_console_get_height_rect$",
+        "^TCOD_console_print_utf$",
+        "^TCOD_console_print_ex_utf$",
+        "^TCOD_console_print_rect_utf$",
+        "^TCOD_console_print_rect_ex_utf$",
+        "^TCOD_console_get_height_rect_utf$",
+        "^TCOD_console_printf$",
+        "^TCOD_console_printf_ex$",
+        "^TCOD_console_printf_rect$",
+        "^TCOD_console_printf_rect_ex$",
+        "^TCOD_console_printf_frame$",
+        "^TCOD_console_get_height_rect_fmt$",
+        "^TCOD_printf_rgb$",
+        "^TCOD_vprintf_rgb$",
+        "^TCOD_console_vprintf$",
+        "^TCOD_console_vprintf_rect$",
+        "^TCOD_log_verbose_fmt_$",
+        "^TCOD_parser_error$",
+        "^TCOD_sys_file_exists$",
+        "^TCOD_sys_register_SDL_renderer$"
+    ],
+    "targetPlatforms": {
+        "windows": {
+            "x86_64-pc-windows-msvc": {}
+        }
+    }
+}

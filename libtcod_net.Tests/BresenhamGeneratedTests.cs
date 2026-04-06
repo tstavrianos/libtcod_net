@@ -50,7 +50,7 @@ public class BresenhamGeneratedTests
         );
     }
 
-    private static IReadOnlyList<(int X, int Y)> GenerateLine(
+    private static unsafe IReadOnlyList<(int X, int Y)> GenerateLine(
         (int X, int Y) begin,
         (int X, int Y) end
     )
@@ -60,8 +60,8 @@ public class BresenhamGeneratedTests
         var y = begin.Y;
         var line = new List<(int X, int Y)> { begin };
 
-        TCOD_line_init_mt(begin.X, begin.Y, end.X, end.Y, ref data);
-        while (!TCOD_line_step_mt(ref x, ref y, ref data))
+        TCOD_line_init_mt(begin.X, begin.Y, end.X, end.Y, &data);
+        while (!TCOD_line_step_mt(&x, &y, &data))
         {
             line.Add((x, y));
         }

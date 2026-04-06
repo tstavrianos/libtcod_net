@@ -1,10 +1,8 @@
 # Dotnet bindings for libtcod
 
-Initial bindings were generated mostly with the help of copilot, with some tweaks here and there.
-
-Included are some unit tests to verify everything is working correctly (ported from the libtcod source code).
-
-Also, have a very rough sample project that shows tilesets, viewports, contexts, consoles and events.
+Bindings are auto generated using c2ffi and c2cs from bottlenoselabs. The included fix script is meant to cleanup some issues I had with the generated code.
+The json files include the comments from the original headers, but c2cs doesn't seem to be doing anything with them. I might try and see if it's possible to add those
+in a post-processing step.
 
 ## Included binaries
 
@@ -21,9 +19,9 @@ vcpkg install libtcod --triplet=x86-windows
 
 After that, I copied the dll and pbd files from vcpkg/installed/x64-windows/bin and vcpkg/installed/x64-windows/debug/bin (and same for x86).
 
+The included binaries are only meant to make the unit tests and sample app work. You should generate your own if you are going to use this.
+
 ## TODO
 
-* Figure out why the code generated from CppSharp compiles but does not run. (very low on my list)
 * Review the unit tests and try and include something that covers as much surface as possible.
 * Managed wrapper classes.
-* Expand the overloads as required.
