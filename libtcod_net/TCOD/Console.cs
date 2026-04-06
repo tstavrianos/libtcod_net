@@ -5,6 +5,9 @@ using static libtcod_net.libtcod;
 
 namespace libtcod_net.TCOD;
 
+/// <summary>
+/// Represents a console for rendering text and graphics.
+/// </summary>
 public sealed unsafe class Console : TCODResource<TCOD_Console>
 {
     public int Width { get; }
@@ -22,6 +25,12 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         Height = TCOD_console_get_height(pointer);
     }
 
+    /// <summary>
+    /// Creates a new console with the specified width and height.
+    /// </summary>
+    /// <param name="width">The width of the console.</param>
+    /// <param name="height">The height of the console.</param>
+    /// <returns>A new Console instance.</returns>
     public static Console Create(int width, int height)
     {
         var pointer = TCOD_console_new(width, height);
@@ -30,26 +39,56 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return console;
     }
 
+    /// <summary>
+    /// Clears the console.
+    /// </summary>
     public void Clear()
     {
         TCOD_console_clear(Pointer);
     }
 
+    /// <summary>
+    /// Gets the background color of the character at the specified position.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the character.</param>
+    /// <param name="y">The y-coordinate of the character.</param>
+    /// <returns>The background color of the character.</returns>
     public TCOD_ColorRGB GetCharBackground(int x, int y)
     {
         return TCOD_console_get_char_background(Pointer, x, y);
     }
 
+    /// <summary>
+    /// Gets the foreground color of the character at the specified position.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the character.</param>
+    /// <param name="y">The y-coordinate of the character.</param>
+    /// <returns>The foreground color of the character.</returns>
     public TCOD_ColorRGB GetCharForeground(int x, int y)
     {
         return TCOD_console_get_char_foreground(Pointer, x, y);
     }
 
+    /// <summary>
+    /// Gets the character at the specified position.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the character.</param>
+    /// <param name="y">The y-coordinate of the character.</param>
+    /// <returns>The character at the specified position.</returns>
     public int GetChar(int x, int y)
     {
         return TCOD_console_get_char(Pointer, x, y);
     }
 
+    /// <summary>
+    /// Puts a character at the specified position with optional foreground and background colors.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the character.</param>
+    /// <param name="y">The y-coordinate of the character.</param>
+    /// <param name="ch">The character to put.</param>
+    /// <param name="fg">The foreground color of the character.</param>
+    /// <param name="bg">The background color of the character.</param>
+    /// <param name="flag">The background flag.</param>
     public void Put(
         int x,
         int y,
@@ -66,6 +105,17 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         TCOD_console_put_rgb(Pointer, x, y, ch, fgPtr, bgPtr, flag);
     }
 
+    /// <summary>
+    /// Draws a rectangle at the specified position with optional foreground and background colors.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the rectangle.</param>
+    /// <param name="y">The y-coordinate of the rectangle.</param>
+    /// <param name="width">The width of the rectangle.</param>
+    /// <param name="height">The height of the rectangle.</param>
+    /// <param name="ch">The character to use for the rectangle.</param>
+    /// <param name="fg">The foreground color of the rectangle.</param>
+    /// <param name="bg">The background color of the rectangle.</param>
+    /// <param name="flag">The background flag.</param>
     public void DrawRect(
         int x,
         int y,
@@ -85,6 +135,18 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         ErrorHelper.CheckAndThrow(ret);
     }
 
+    /// <summary>
+    /// Draws a frame at the specified position with optional decoration, foreground, and background colors.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the frame.</param>
+    /// <param name="y">The y-coordinate of the frame.</param>
+    /// <param name="width">The width of the frame.</param>
+    /// <param name="height">The height of the frame.</param>
+    /// <param name="decoration">The decoration characters for the frame.</param>
+    /// <param name="fg">The foreground color of the frame.</param>
+    /// <param name="bg">The background color of the frame.</param>
+    /// <param name="flag">The background flag.</param>
+    /// <param name="clear">Whether to clear the area inside the frame.</param>
     public void DrawFrame(
         int x,
         int y,
@@ -133,6 +195,17 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         ErrorHelper.CheckAndThrow(ret);
     }
 
+    /// <summary>
+    /// Prints text at the specified position with optional foreground and background colors, background flag, and alignment.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the text.</param>
+    /// <param name="y">The y-coordinate of the text.</param>
+    /// <param name="text">The text to print.</param>
+    /// <param name="fg">The foreground color of the text.</param>
+    /// <param name="bg">The background color of the text.</param>
+    /// <param name="flag">The background flag.</param>
+    /// <param name="alignment">The text alignment.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Print(
         int x,
         int y,
@@ -163,6 +236,20 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         ErrorHelper.CheckAndThrow(ret);
     }
 
+    /// <summary>
+    /// Prints text within a rectangular area with optional foreground and background colors, background flag, and alignment.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the rectangle.</param>
+    /// <param name="y">The y-coordinate of the rectangle.</param>
+    /// <param name="width">The width of the rectangle.</param>
+    /// <param name="height">The height of the rectangle.</param>
+    /// <param name="text">The text to print within the rectangle.</param>
+    /// <param name="fg">The foreground color of the text.</param>
+    /// <param name="bg">The background color of the text.</param>
+    /// <param name="flag">The background flag.</param>
+    /// <param name="alignment">The text alignment.</param>
+    /// <returns>The number of lines printed.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public int PrintRect(
         int x,
         int y,
@@ -199,6 +286,16 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return ret;
     }
 
+    /// <summary>
+    /// Gets the height of the text within a rectangular area.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the rectangle.</param>
+    /// <param name="y">The y-coordinate of the rectangle.</param>
+    /// <param name="width">The width of the rectangle.</param>
+    /// <param name="height">The height of the rectangle.</param>
+    /// <param name="text">The text to measure.</param>
+    /// <returns>The height of the text within the rectangle.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public int GetHeightRect(int x, int y, int width, int height, string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -217,6 +314,11 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return ret;
     }
 
+    /// <summary>
+    /// Flushes the console to the specified viewport.
+    /// </summary>
+    /// <param name="viewport">The viewport to flush the console to.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Flush(Viewport viewport)
     {
         ArgumentNullException.ThrowIfNull(viewport);
@@ -224,11 +326,29 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         ErrorHelper.CheckAndThrow(ret);
     }
 
+    /// <summary>
+    /// Sets the key color for the console.
+    /// </summary>
+    /// <param name="color">The key color to set.</param>
     public void SetKeyColor(TCOD_ColorRGB color)
     {
         TCOD_console_set_key_color(Pointer, color);
     }
 
+    /// <summary>
+    /// Blits a portion of the source console to the destination console.
+    /// </summary>
+    /// <param name="src">The source console.</param>
+    /// <param name="xSrc">The x-coordinate of the source rectangle.</param>
+    /// <param name="ySrc">The y-coordinate of the source rectangle.</param>
+    /// <param name="wSrc">The width of the source rectangle.</param>
+    /// <param name="hSrc">The height of the source rectangle.</param>
+    /// <param name="dst">The destination console.</param>
+    /// <param name="xDst">The x-coordinate of the destination rectangle.</param>
+    /// <param name="yDst">The y-coordinate of the destination rectangle.</param>
+    /// <param name="foregroundAlpha">The alpha value for the foreground.</param>
+    /// <param name="backgroundAlpha">The alpha value for the background.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public static void Blit(
         Console src,
         int xSrc,
@@ -258,6 +378,21 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         );
     }
 
+    /// <summary>
+    /// Blits a portion of the source console to the destination console with a key color.
+    /// </summary>
+    /// <param name="src">The source console.</param>
+    /// <param name="xSrc">The x-coordinate of the source rectangle.</param>
+    /// <param name="ySrc">The y-coordinate of the source rectangle.</param>
+    /// <param name="wSrc">The width of the source rectangle.</param>
+    /// <param name="hSrc">The height of the source rectangle.</param>
+    /// <param name="dst">The destination console.</param>
+    /// <param name="xDst">The x-coordinate of the destination rectangle.</param>
+    /// <param name="yDst">The y-coordinate of the destination rectangle.</param>
+    /// <param name="foregroundAlpha">The alpha value for the foreground.</param>
+    /// <param name="backgroundAlpha">The alpha value for the background.</param>
+    /// <param name="keyColor">The key color to use for transparency.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public static void Blit(
         Console src,
         int xSrc,
@@ -289,19 +424,27 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         );
     }
 
-    public static Console LoadFromFile(string filename, bool xp = false)
+    /// <summary>
+    /// Loads a console from a file. The file can be in either XP, ASC or APF format, depending on the file extension.
+    /// </summary>
+    /// <param name="filename">The path to the file.</param>
+    /// <returns>The loaded console.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
+    public static Console LoadFromFile(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
-        TCOD_Console* ret;
         using var filenamePtr = new StringMarshal(filename);
-        if (xp)
-            ret = TCOD_console_from_xp(filenamePtr.CStr);
-        else
-            ret = TCOD_console_from_file(filenamePtr.CStr);
+        var ret = TCOD_console_from_xp(filenamePtr.CStr);
         ErrorHelper.CheckAndThrow(ret);
         return new Console(ret);
     }
 
+    /// <summary>
+    /// Updates the console from an XP file.
+    /// </summary>
+    /// <param name="filename">The path to the XP file.</param>
+    /// <returns>True if the update was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TryUpdateFromXp(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -309,6 +452,12 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_load_xp(Pointer, filenamePtr.CStr);
     }
 
+    /// <summary>
+    /// Updates the console from an APF file.
+    /// </summary>
+    /// <param name="filename">The path to the APF file.</param>
+    /// <returns>True if the update was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TryUpdateFromApf(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -316,6 +465,12 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_load_apf(Pointer, filenamePtr.CStr);
     }
 
+    /// <summary>
+    /// Updates the console from an ASC file.
+    /// </summary>
+    /// <param name="filename">The path to the ASC file.</param>
+    /// <returns>True if the update was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TryUpdateFromAsc(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -323,6 +478,13 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_load_asc(Pointer, filenamePtr.CStr);
     }
 
+    /// <summary>
+    /// Saves the console to an XP file.
+    /// </summary>
+    /// <param name="filename">The path to the XP file.</param>
+    /// <param name="compressionLevel">The compression level to use.</param>
+    /// <returns>True if the save was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TrySaveToXp(string filename, int compressionLevel)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -330,6 +492,12 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_save_xp(Pointer, filenamePtr.CStr, compressionLevel);
     }
 
+    /// <summary>
+    /// Saves the console to an ASC file.
+    /// </summary>
+    /// <param name="filename">The path to the ASC file.</param>
+    /// <returns>True if the save was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TrySaveToAsc(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -337,6 +505,12 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_save_asc(Pointer, filenamePtr.CStr);
     }
 
+    /// <summary>
+    /// Saves the console to an APF file.
+    /// </summary>
+    /// <param name="filename">The path to the APF file.</param>
+    /// <returns>True if the save was successful; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
     public bool TrySaveToApf(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -344,6 +518,13 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return TCOD_console_save_apf(Pointer, filenamePtr.CStr);
     }
 
+    /// <summary>
+    /// Loads consoles from an XP file.
+    /// </summary>
+    /// <param name="filename">The path to the XP file.</param>
+    /// <returns>A read-only list of consoles loaded from the XP file.</returns>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
+    /// <exception cref="TCODException">Thrown if there is an error loading the XP file.</exception>
     public static IReadOnlyList<Console> LoadConsolesFromXp(string filename)
     {
         ArgumentException.ThrowIfNullOrEmpty(filename);
@@ -378,6 +559,15 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
         return r;
     }
 
+    /// <summary>
+    /// Saves multiple consoles to an XP file.
+    /// </summary>
+    /// <param name="filename">The path to the XP file.</param>
+    /// <param name="compressionLevel">The compression level to use.</param>
+    /// <param name="consoles">The list of consoles to save.</param>
+    /// <exception cref="ArgumentException">Thrown if the filename is null or empty.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if the consoles list is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the consoles list is empty.</exception>
     public static void SaveConsolesToXp(
         string filename,
         int compressionLevel,
