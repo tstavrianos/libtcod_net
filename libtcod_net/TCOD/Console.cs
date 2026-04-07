@@ -33,6 +33,8 @@ public sealed unsafe class Console : TCODResource<TCOD_Console>
     /// <returns>A new Console instance.</returns>
     public static Console Create(int width, int height)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
         var pointer = TCOD_console_new(width, height);
         ErrorHelper.CheckAndThrow(pointer);
         var console = new Console(pointer);
